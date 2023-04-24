@@ -32,7 +32,11 @@ class Jugador(threading.Thread):
         else:
             self.saldo -= self.apuesta
     
-
+class Ruleta():
+    def tirar(self):
+        time.sleep(5) #Saca un número cada 5 segundos
+        n = random.randint(0,36)
+        return n
 
 
 
