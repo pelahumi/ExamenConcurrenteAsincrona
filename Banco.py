@@ -1,38 +1,29 @@
 #Importamos las librerías que necesitaremos
 import threading
+import unittest
 
 #Creamos la clase Banco
 class Banco(threading.Thread):
     def __init__(self):
-        super().__init__()
         self.saldo = 100
+        self.bloquear = threading.Lock()
     
     def ingresar(self, cantidad_ingresar):
-        if cantidad_ingresar == 100:
-            self.saldo += cantidad_ingresar
-            print("Se ingresaron 100 euros en su cuenta.")
-        elif cantidad_ingresar == 50:
-            self.saldo += cantidad_ingresar
-            print("Se ingresaron 50 euros en su cuenta.")
-        elif cantidad_ingresar == 20:
-            self.saldo += cantidad_ingresar
-            print("Se ingresaron 20 euros en su cuenta.")
-        else:
-            print("Error al ingresar el dinero.")
+        self.bloquear.acquire()
+        self.saldo += cantidad_ingresar
+        self.bloquear.release()
 
     def retirar(self, cantidad_retirar):
-        if cantidad_retirar == 100:
-            self.saldo += cantidad_retirar
-            print("Se retiraron 100 euros en su cuenta.")
-        elif cantidad_retirar == 50:
-            self.saldo += cantidad_retirar
-            print("Se retiraron 50 euros en su cuenta.")
-        elif cantidad_retirar== 20:
-            self.saldo += cantidad_retirar
-            print("Se retiraron 20 euros en su cuenta.")
+        self.bloquear.acquire()
+        if self.saldo < cantidad_retirar:
+            raise ValueError("No hay suficiente dinero para retirar.")
         else:
-            print("Error al ingresar el dinero.")
+            self.saldo -= cantidad_retirar
+        self.bloquear.release()
 
-    def run(self):
-        pass
+class DockTestBanco(unittest.TestCase):
+    def test_ingresar(self):
+        banco = Banco()
+        for i in range(40):
+            threading.Thread(target=banco.retirar)
     
