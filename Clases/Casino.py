@@ -21,7 +21,6 @@ class Jugador(threading.Thread):
                 self.apuesta *= 2
             else:
                 self.apuesta = 10
-        self.saldo -= self.apuesta
     
     def ganancias(self, numero):
         if self.estrategia == "numero concreto" and numero == self.n_apostado:
@@ -57,8 +56,11 @@ if __name__ == "__main__":
         jugador = Jugador("martingala", random.randint(0,36))
         jugadores.append(jugador)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
-        pool.map(jugador.)
+    for jugador in jugadores:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+            pool.map(jugador.apostar())
+            pool.map(jugador.ganancias())
+
     
         
         
