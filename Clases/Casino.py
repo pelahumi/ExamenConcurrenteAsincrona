@@ -1,6 +1,7 @@
 import threading
 import time
 import random
+import concurrent.futures
 
 class Jugador(threading.Thread):
     def __init__(self, estrategia, n_apostado, apuesta):
@@ -38,6 +39,29 @@ class Ruleta():
         n = random.randint(0,36)
         return n
 
+class Banca():
+    def __init__(self):
+        self.saldo = 50000
+    
+
+if __name__ == "__main__":
+    ruleta = Ruleta()
+    jugadores = []
+    for i in range(4):
+        jugador = Jugador("numero concreto", random.randint(0,36))
+        jugadores.append(jugador)
+    for i in range(4):
+        jugador = Jugador("par o impar", )
+        jugadores.append(jugador)
+    for i in range(4):
+        jugador = Jugador("martingala", random.randint(0,36))
+        jugadores.append(jugador)
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+        pool.map(jugador.)
+    
+        
+        
 
 
 
