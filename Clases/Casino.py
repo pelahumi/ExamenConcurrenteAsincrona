@@ -9,7 +9,7 @@ class Jugador(threading.Thread):
         self.n_apostado = n_apostado
         self.apuesta  = apuesta
         self.ultima_apuesta = False #True si ganó la última apuesta
-    
+
     def apostar(self):
         if self.estrategia == "numero concreto":
             self.apuesta = 10
@@ -22,7 +22,18 @@ class Jugador(threading.Thread):
                 self.apuesta = 10
         self.saldo -= self.apuesta
     
-    def ganancias(self):
-        
+    def ganancias(self, numero):
+        if self.estrategia == "numero concreto" and numero == self.n_apostado:
+            self.saldo += self.apuesta * 10
+        elif self.estrategia == "par o impar" and numero == self.n_apostado:
+            self.saldo += self.apuesta * 2
+        elif self.estrategia == "martingala" and numero == self.n_apostado:
+            self.saldo += 360
+        else:
+            self.saldo -= self.apuesta
+    
+
+
+
 
 
